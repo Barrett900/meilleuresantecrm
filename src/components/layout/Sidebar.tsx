@@ -34,7 +34,7 @@ const Sidebar = () => {
     >
       <div className="p-4 flex justify-between items-center border-b border-gray-200">
         {!collapsed && (
-          <h1 className="text-xl font-bold text-blue-600">Zoho CRM</h1>
+          <h1 className="text-xl font-bold text-blue-600">MEILLEURE SANTE CRM</h1>
         )}
         <Button 
           variant="ghost" 

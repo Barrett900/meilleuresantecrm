@@ -9,6 +9,7 @@ import Dashboard from "@/pages/Dashboard";
 import Contacts from "@/pages/Contacts";
 import Deals from "@/pages/Deals";
 import Activities from "@/pages/Activities";
+import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/deals" element={<Deals />} />
             <Route path="/activities" element={<Activities />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
