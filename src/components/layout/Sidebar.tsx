@@ -104,12 +104,13 @@ const Sidebar = () => {
 
           <Button 
             variant="ghost" 
-            size={collapsed ? "icon" : "sm"} 
+            size="icon" 
             onClick={logout}
             className="text-gray-600 hover:text-red-600"
+            aria-label="Déconnexion"
+            title="Déconnexion"
           >
-            <LogOut size={collapsed ? 20 : 16} />
-            {!collapsed && <span className="ml-2">Déconnexion</span>}
+            <LogOut size={20} />
           </Button>
         </div>
       </div>
