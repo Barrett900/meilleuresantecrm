@@ -10,7 +10,9 @@ import Contacts from "@/pages/Contacts";
 import Deals from "@/pages/Deals";
 import Activities from "@/pages/Activities";
 import Settings from "@/pages/Settings";
+import Admin from "@/pages/Admin";
 import NotFound from "@/pages/NotFound";
+import AuthLayout from "@/components/auth/AuthLayout";
 
 const queryClient = new QueryClient();
 
@@ -20,17 +22,20 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/contacts" element={<Contacts />} />
-            <Route path="/deals" element={<Deals />} />
-            <Route path="/activities" element={<Activities />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+        <AuthLayout>
+          <div className="flex h-screen overflow-hidden">
+            <Sidebar />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/contacts" element={<Contacts />} />
+              <Route path="/deals" element={<Deals />} />
+              <Route path="/activities" element={<Activities />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </AuthLayout>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

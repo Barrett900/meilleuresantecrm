@@ -8,22 +8,37 @@ import {
   Calendar, 
   Settings, 
   ChevronLeft, 
-  ChevronRight 
+  ChevronRight,
+  UserCog,
+  LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/components/auth/AuthLayout";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { userRole, logout } = useAuth();
 
-  const menuItems = [
+  // Base menu items for all users
+  const baseMenuItems = [
     { path: "/", label: "Tableau de bord", icon: Home },
     { path: "/contacts", label: "Contacts", icon: Users },
     { path: "/deals", label: "Affaires", icon: Briefcase },
     { path: "/activities", label: "Activités", icon: Calendar },
     { path: "/settings", label: "Paramètres", icon: Settings },
   ];
+
+  // Admin-only menu items
+  const adminMenuItems = [
+    { path: "/admin", label: "Administration", icon: UserCog },
+  ];
+
+  // Combine menu items based on user role
+  const menuItems = userRole === "admin" 
+    ? [...baseMenuItems, ...adminMenuItems] 
+    : baseMenuItems;
 
   return (
     <div 
@@ -70,16 +85,32 @@ const Sidebar = () => {
       </nav>
       
       <div className="p-4 border-t border-gray-200">
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
-            JD
-          </div>
-          {!collapsed && (
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700">Jean Dupont</p>
-              <p className="text-xs text-gray-500">Admin</p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+              {userRole === "admin" ? "AD" : "AG"}
             </div>
-          )}
+            {!collapsed && (
+              <div className="ml-3">
+                <p className="text-sm font-medium text-gray-700">
+                  {userRole === "admin" ? "Administrateur" : "Agent"}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {userRole === "admin" ? "Admin" : "Agent"}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <Button 
+            variant="ghost" 
+            size={collapsed ? "icon" : "sm"} 
+            onClick={logout}
+            className="text-gray-600 hover:text-red-600"
+          >
+            <LogOut size={collapsed ? 20 : 16} />
+            {!collapsed && <span className="ml-2">Déconnexion</span>}
+          </Button>
         </div>
       </div>
     </div>
