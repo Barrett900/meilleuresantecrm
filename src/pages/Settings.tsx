@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import Header from "@/components/layout/Header";
+import { useForm } from "react-hook-form";
 import { 
   Card, 
   CardContent, 
@@ -30,13 +31,52 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, User, Building, Lock } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 const Settings = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const handleSaveProfile = (e: React.FormEvent) => {
-    e.preventDefault();
+  const profileForm = useForm({
+    defaultValues: {
+      firstName: "Jean",
+      lastName: "Dupont",
+      email: "jean.dupont@meilleuresante.fr",
+      phone: "+33 6 12 34 56 78",
+      role: "admin",
+      bio: "Directeur commercial pour Meilleure Santé CRM"
+    }
+  });
+
+  const emailForm = useForm({
+    defaultValues: {
+      emailAddress: "jean.dupont@meilleuresante.fr",
+      smtpServer: "smtp.meilleuresante.fr",
+      smtpPort: "587",
+      encryption: "tls",
+      smtpUsername: "jean.dupont",
+      smtpPassword: "********"
+    }
+  });
+
+  const companyForm = useForm({
+    defaultValues: {
+      companyName: "Meilleure Santé",
+      companyEmail: "contact@meilleuresante.fr",
+      companyPhone: "+33 1 23 45 67 89",
+      companyAddress: "12 Avenue de la Santé\n75000 Paris\nFrance"
+    }
+  });
+
+  const securityForm = useForm({
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: ""
+    }
+  });
+  
+  const handleSaveProfile = (data: any) => {
     setIsSubmitting(true);
     
     // Simuler un délai de sauvegarde
@@ -46,11 +86,11 @@ const Settings = () => {
         title: "Profil mis à jour",
         description: "Vos informations ont été enregistrées avec succès",
       });
+      console.log("Profile data:", data);
     }, 800);
   };
 
-  const handleSaveEmail = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveEmail = (data: any) => {
     setIsSubmitting(true);
     
     // Simuler un délai de sauvegarde
@@ -60,6 +100,33 @@ const Settings = () => {
         title: "Paramètres email mis à jour",
         description: "Vos paramètres d'email ont été enregistrés avec succès",
       });
+      console.log("Email data:", data);
+    }, 800);
+  };
+
+  const handleSaveCompany = (data: any) => {
+    setIsSubmitting(true);
+    
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast({
+        title: "Informations de l'entreprise mises à jour",
+        description: "Les informations ont été enregistrées avec succès",
+      });
+      console.log("Company data:", data);
+    }, 800);
+  };
+
+  const handleSaveSecurity = (data: any) => {
+    setIsSubmitting(true);
+    
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast({
+        title: "Mot de passe mis à jour",
+        description: "Votre mot de passe a été modifié avec succès",
+      });
+      console.log("Security data:", data);
     }, 800);
   };
   
@@ -97,57 +164,109 @@ const Settings = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSaveProfile} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="firstName">Prénom</FormLabel>
-                      <Input id="firstName" placeholder="Prénom" defaultValue="Jean" />
+                <Form {...profileForm}>
+                  <form onSubmit={profileForm.handleSubmit(handleSaveProfile)} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={profileForm.control}
+                        name="firstName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Prénom</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Prénom" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={profileForm.control}
+                        name="lastName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nom</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Nom" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                     </div>
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="lastName">Nom</FormLabel>
-                      <Input id="lastName" placeholder="Nom" defaultValue="Dupont" />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={profileForm.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="Email" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={profileForm.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Téléphone</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Téléphone" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                     </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="email">Email</FormLabel>
-                      <Input id="email" type="email" placeholder="Email" defaultValue="jean.dupont@meilleuresante.fr" />
-                    </div>
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="phone">Téléphone</FormLabel>
-                      <Input id="phone" placeholder="Téléphone" defaultValue="+33 6 12 34 56 78" />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="role">Rôle</FormLabel>
-                    <Select defaultValue="admin">
-                      <SelectTrigger id="role">
-                        <SelectValue placeholder="Sélectionner un rôle" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="admin">Administrateur</SelectItem>
-                        <SelectItem value="agent">Agent</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="bio">Bio</FormLabel>
-                    <Textarea 
-                      id="bio" 
-                      placeholder="Quelques mots à propos de vous..." 
-                      defaultValue="Directeur commercial pour Meilleure Santé CRM"
+                    
+                    <FormField
+                      control={profileForm.control}
+                      name="role"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Rôle</FormLabel>
+                          <Select 
+                            onValueChange={field.onChange} 
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Sélectionner un rôle" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="admin">Administrateur</SelectItem>
+                              <SelectItem value="agent">Agent</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Button type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? "Enregistrement..." : "Enregistrer les modifications"}
-                    </Button>
-                  </div>
-                </form>
+                    
+                    <FormField
+                      control={profileForm.control}
+                      name="bio"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Bio</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Quelques mots à propos de vous..." 
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <div className="flex justify-end">
+                      <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Enregistrement..." : "Enregistrer les modifications"}
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
           </TabsContent>
@@ -161,54 +280,107 @@ const Settings = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSaveEmail} className="space-y-6">
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="emailAddress">Adresse email d'envoi</FormLabel>
-                    <Input id="emailAddress" type="email" placeholder="Email" defaultValue="jean.dupont@meilleuresante.fr" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="smtpServer">Serveur SMTP</FormLabel>
-                    <Input id="smtpServer" placeholder="smtp.example.com" defaultValue="smtp.meilleuresante.fr" />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="smtpPort">Port SMTP</FormLabel>
-                      <Input id="smtpPort" placeholder="587" defaultValue="587" />
+                <Form {...emailForm}>
+                  <form onSubmit={emailForm.handleSubmit(handleSaveEmail)} className="space-y-6">
+                    <FormField
+                      control={emailForm.control}
+                      name="emailAddress"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Adresse email d'envoi</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="Email" {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={emailForm.control}
+                      name="smtpServer"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Serveur SMTP</FormLabel>
+                          <FormControl>
+                            <Input placeholder="smtp.example.com" {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={emailForm.control}
+                        name="smtpPort"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Port SMTP</FormLabel>
+                            <FormControl>
+                              <Input placeholder="587" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={emailForm.control}
+                        name="encryption"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Encryption</FormLabel>
+                            <Select 
+                              onValueChange={field.onChange} 
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Sélectionner une méthode" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="tls">TLS</SelectItem>
+                                <SelectItem value="ssl">SSL</SelectItem>
+                                <SelectItem value="none">Aucune</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </FormItem>
+                        )}
+                      />
                     </div>
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="encryption">Encryption</FormLabel>
-                      <Select defaultValue="tls">
-                        <SelectTrigger id="encryption">
-                          <SelectValue placeholder="Sélectionner une méthode" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="tls">TLS</SelectItem>
-                          <SelectItem value="ssl">SSL</SelectItem>
-                          <SelectItem value="none">Aucune</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={emailForm.control}
+                        name="smtpUsername"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nom d'utilisateur</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Username" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={emailForm.control}
+                        name="smtpPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Mot de passe</FormLabel>
+                            <FormControl>
+                              <Input type="password" placeholder="Mot de passe" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                     </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="smtpUsername">Nom d'utilisateur</FormLabel>
-                      <Input id="smtpUsername" placeholder="Username" defaultValue="jean.dupont" />
+                    
+                    <div className="flex justify-end">
+                      <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Enregistrement..." : "Enregistrer les paramètres"}
+                      </Button>
                     </div>
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="smtpPassword">Mot de passe</FormLabel>
-                      <Input id="smtpPassword" type="password" placeholder="Mot de passe" defaultValue="********" />
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Button type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? "Enregistrement..." : "Enregistrer les paramètres"}
-                    </Button>
-                  </div>
-                </form>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
           </TabsContent>
@@ -222,36 +394,71 @@ const Settings = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="space-y-6">
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="companyName">Nom de l'entreprise</FormLabel>
-                    <Input id="companyName" placeholder="Nom de l'entreprise" defaultValue="Meilleure Santé" />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="companyEmail">Email</FormLabel>
-                      <Input id="companyEmail" type="email" placeholder="Email" defaultValue="contact@meilleuresante.fr" />
-                    </div>
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="companyPhone">Téléphone</FormLabel>
-                      <Input id="companyPhone" placeholder="Téléphone" defaultValue="+33 1 23 45 67 89" />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="companyAddress">Adresse</FormLabel>
-                    <Textarea 
-                      id="companyAddress" 
-                      placeholder="Adresse complète" 
-                      defaultValue="12 Avenue de la Santé\n75000 Paris\nFrance"
+                <Form {...companyForm}>
+                  <form onSubmit={companyForm.handleSubmit(handleSaveCompany)} className="space-y-6">
+                    <FormField
+                      control={companyForm.control}
+                      name="companyName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nom de l'entreprise</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Nom de l'entreprise" {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Button type="submit">Enregistrer les modifications</Button>
-                  </div>
-                </form>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={companyForm.control}
+                        name="companyEmail"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="Email" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={companyForm.control}
+                        name="companyPhone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Téléphone</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Téléphone" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <FormField
+                      control={companyForm.control}
+                      name="companyAddress"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Adresse</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Adresse complète" 
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <div className="flex justify-end">
+                      <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Enregistrement..." : "Enregistrer les modifications"}
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
           </TabsContent>
@@ -265,27 +472,55 @@ const Settings = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="space-y-6">
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="currentPassword">Mot de passe actuel</FormLabel>
-                    <Input id="currentPassword" type="password" placeholder="••••••••" />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="newPassword">Nouveau mot de passe</FormLabel>
-                      <Input id="newPassword" type="password" placeholder="••••••••" />
+                <Form {...securityForm}>
+                  <form onSubmit={securityForm.handleSubmit(handleSaveSecurity)} className="space-y-6">
+                    <FormField
+                      control={securityForm.control}
+                      name="currentPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mot de passe actuel</FormLabel>
+                          <FormControl>
+                            <Input type="password" placeholder="••••••••" {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={securityForm.control}
+                        name="newPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nouveau mot de passe</FormLabel>
+                            <FormControl>
+                              <Input type="password" placeholder="••••••••" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={securityForm.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Confirmer le mot de passe</FormLabel>
+                            <FormControl>
+                              <Input type="password" placeholder="••••••••" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
                     </div>
-                    <div className="space-y-2">
-                      <FormLabel htmlFor="confirmPassword">Confirmer le mot de passe</FormLabel>
-                      <Input id="confirmPassword" type="password" placeholder="••••••••" />
+                    
+                    <div className="flex justify-end">
+                      <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Enregistrement..." : "Mettre à jour le mot de passe"}
+                      </Button>
                     </div>
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Button type="submit">Mettre à jour le mot de passe</Button>
-                  </div>
-                </form>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
           </TabsContent>
