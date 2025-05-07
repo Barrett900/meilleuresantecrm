@@ -11,9 +11,6 @@ const Dashboard = () => {
       <main className="p-6">
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Bienvenue sur MEILLEURE SANTE CRM</h2>
-          <p className="text-gray-600">
-            Gérez vos prospects, suivez vos performances et boostez vos ventes dans le secteur de la santé.
-          </p>
         </div>
         
         <DashboardCards />
