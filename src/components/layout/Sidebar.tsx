@@ -84,6 +84,15 @@ const Sidebar = () => {
         </ul>
       </nav>
       
+      {/* Logo Assurancia */}
+      <div className="px-4 py-6 flex justify-center">
+        <img 
+          src="/lovable-uploads/24c926d0-e648-4212-a552-cbb7ef2891e6.png" 
+          alt="Assurancia Courtage" 
+          className={collapsed ? "w-12" : "w-36"}
+        />
+      </div>
+      
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
