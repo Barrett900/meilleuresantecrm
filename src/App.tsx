@@ -11,6 +11,9 @@ import Deals from "@/pages/Deals";
 import Activities from "@/pages/Activities";
 import Settings from "@/pages/Settings";
 import Admin from "@/pages/Admin";
+import TimeTracking from "@/pages/TimeTracking";
+import TimeManagement from "@/pages/TimeManagement";
+import Messages from "@/pages/Messages";
 import NotFound from "@/pages/NotFound";
 import AuthLayout from "@/components/auth/AuthLayout";
 
@@ -30,6 +33,9 @@ const App = () => (
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/deals" element={<Deals />} />
               <Route path="/activities" element={<Activities />} />
+              <Route path="/time-tracking" element={<TimeTracking />} />
+              <Route path="/time-management" element={<TimeManagement />} />
+              <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />

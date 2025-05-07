@@ -10,7 +10,9 @@ import {
   ChevronLeft, 
   ChevronRight,
   UserCog,
-  LogOut
+  LogOut,
+  Clock,
+  MessageCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,12 +29,15 @@ const Sidebar = () => {
     { path: "/contacts", label: "Contacts", icon: Users },
     { path: "/deals", label: "Affaires", icon: Briefcase },
     { path: "/activities", label: "Activités", icon: Calendar },
+    { path: "/time-tracking", label: "Pointage", icon: Clock },
+    { path: "/messages", label: "Messages", icon: MessageCircle },
     { path: "/settings", label: "Paramètres", icon: Settings },
   ];
 
   // Admin-only menu items
   const adminMenuItems = [
     { path: "/admin", label: "Administration", icon: UserCog },
+    { path: "/time-management", label: "Gestion du temps", icon: Clock },
   ];
 
   // Combine menu items based on user role
