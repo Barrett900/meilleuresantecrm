@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/layout/Header";
 import { useForm } from "react-hook-form";
@@ -41,8 +40,8 @@ const Settings = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isAgent = userRole === "agent";
   
-  // Default tab is 'email' for agents, 'profile' for admins
-  const defaultTab = isAgent ? "email" : "profile";
+  // Default tab is 'profile' for both agents and admins (agents will see restricted access message)
+  const defaultTab = "profile";
   
   const profileForm = useForm({
     defaultValues: {
@@ -143,7 +142,7 @@ const Settings = () => {
       
       <main className="p-6">
         <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="grid w-full md:w-auto grid-cols-3 md:grid-cols-4 mb-6">
+          <TabsList className="grid w-full md:w-auto grid-cols-2 md:grid-cols-3 mb-6">
             <TabsTrigger 
               value="profile" 
               className={cn(
@@ -155,10 +154,12 @@ const Settings = () => {
               <User size={16} className="mr-2 hidden md:inline" />
               <span>Profil</span>
             </TabsTrigger>
-            <TabsTrigger value="email" className="flex items-center">
-              <Mail size={16} className="mr-2 hidden md:inline" />
-              <span>Email</span>
-            </TabsTrigger>
+            {!isAgent && (
+              <TabsTrigger value="email" className="flex items-center">
+                <Mail size={16} className="mr-2 hidden md:inline" />
+                <span>Email</span>
+              </TabsTrigger>
+            )}
             <TabsTrigger 
               value="company" 
               className={cn(
@@ -316,119 +317,121 @@ const Settings = () => {
             )}
           </TabsContent>
           
-          <TabsContent value="email">
-            <Card>
-              <CardHeader>
-                <CardTitle>Paramètres d'email</CardTitle>
-                <CardDescription>
-                  Configurez vos paramètres d'email pour l'automatisation
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Form {...emailForm}>
-                  <form onSubmit={emailForm.handleSubmit(handleSaveEmail)} className="space-y-6">
-                    <FormField
-                      control={emailForm.control}
-                      name="emailAddress"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Adresse email d'envoi</FormLabel>
-                          <FormControl>
-                            <Input type="email" placeholder="Email" {...field} />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={emailForm.control}
-                      name="smtpServer"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Serveur SMTP</FormLabel>
-                          <FormControl>
-                            <Input placeholder="smtp.example.com" {...field} />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {!isAgent && (
+            <TabsContent value="email">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Paramètres d'email</CardTitle>
+                  <CardDescription>
+                    Configurez vos paramètres d'email pour l'automatisation
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Form {...emailForm}>
+                    <form onSubmit={emailForm.handleSubmit(handleSaveEmail)} className="space-y-6">
                       <FormField
                         control={emailForm.control}
-                        name="smtpPort"
+                        name="emailAddress"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Port SMTP</FormLabel>
+                            <FormLabel>Adresse email d'envoi</FormLabel>
                             <FormControl>
-                              <Input placeholder="587" {...field} />
+                              <Input type="email" placeholder="Email" {...field} />
                             </FormControl>
                           </FormItem>
                         )}
                       />
+                      
                       <FormField
                         control={emailForm.control}
-                        name="encryption"
+                        name="smtpServer"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Encryption</FormLabel>
-                            <Select 
-                              onValueChange={field.onChange} 
-                              defaultValue={field.value}
-                            >
+                            <FormLabel>Serveur SMTP</FormLabel>
+                            <FormControl>
+                              <Input placeholder="smtp.example.com" {...field} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <FormField
+                          control={emailForm.control}
+                          name="smtpPort"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Port SMTP</FormLabel>
                               <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Sélectionner une méthode" />
-                                </SelectTrigger>
+                                <Input placeholder="587" {...field} />
                               </FormControl>
-                              <SelectContent>
-                                <SelectItem value="tls">TLS</SelectItem>
-                                <SelectItem value="ssl">SSL</SelectItem>
-                                <SelectItem value="none">Aucune</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
-                        control={emailForm.control}
-                        name="smtpUsername"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Nom d'utilisateur</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Username" {...field} />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={emailForm.control}
-                        name="smtpPassword"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Mot de passe</FormLabel>
-                            <FormControl>
-                              <Input type="password" placeholder="Mot de passe" {...field} />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <div className="flex justify-end">
-                      <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Enregistrement..." : "Enregistrer les paramètres"}
-                      </Button>
-                    </div>
-                  </form>
-                </Form>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={emailForm.control}
+                          name="encryption"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Encryption</FormLabel>
+                              <Select 
+                                onValueChange={field.onChange} 
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Sélectionner une méthode" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="tls">TLS</SelectItem>
+                                  <SelectItem value="ssl">SSL</SelectItem>
+                                  <SelectItem value="none">Aucune</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <FormField
+                          control={emailForm.control}
+                          name="smtpUsername"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Nom d'utilisateur</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Username" {...field} />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={emailForm.control}
+                          name="smtpPassword"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Mot de passe</FormLabel>
+                              <FormControl>
+                                <Input type="password" placeholder="Mot de passe" {...field} />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <div className="flex justify-end">
+                        <Button type="submit" disabled={isSubmitting}>
+                          {isSubmitting ? "Enregistrement..." : "Enregistrer les paramètres"}
+                        </Button>
+                      </div>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
           
           <TabsContent value="company">
             {!isAgent ? (
