@@ -43,18 +43,18 @@ const Sidebar = () => {
   return (
     <div 
       className={cn(
-        "h-screen bg-white border-r border-gray-200 transition-all duration-300 flex flex-col",
+        "h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300 flex flex-col",
         collapsed ? "w-20" : "w-64"
       )}
     >
-      <div className="p-4 flex justify-between items-center border-b border-gray-200">
+      <div className="p-4 flex justify-between items-center border-b border-sidebar-border">
         {!collapsed && (
-          <h1 className="text-xl font-bold text-blue-600">MEILLEURE SANTE CRM</h1>
+          <h1 className="text-xl font-bold text-white">MEILLEURE SANTE CRM</h1>
         )}
         <Button 
           variant="ghost" 
           size="icon" 
-          className="ml-auto" 
+          className="ml-auto text-white hover:bg-sidebar-accent" 
           onClick={() => setCollapsed(!collapsed)}
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
@@ -70,8 +70,8 @@ const Sidebar = () => {
                   className={cn(
                     "flex items-center p-3 rounded-md transition-colors",
                     location.pathname === item.path 
-                      ? "bg-blue-50 text-blue-600" 
-                      : "text-gray-600 hover:bg-gray-100",
+                      ? "bg-sidebar-accent text-white" 
+                      : "text-gray-100 hover:bg-sidebar-accent/70",
                     collapsed && "justify-center"
                   )}
                 >
@@ -93,18 +93,18 @@ const Sidebar = () => {
         />
       </div>
       
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-sidebar-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+            <div className="w-8 h-8 rounded-full bg-sidebar-accent flex items-center justify-center text-white font-medium">
               {userRole === "admin" ? "AD" : "AG"}
             </div>
             {!collapsed && (
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-sm font-medium text-white">
                   {userRole === "admin" ? "Administrateur" : "Agent"}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-300">
                   {userRole === "admin" ? "Admin" : "Agent"}
                 </p>
               </div>
@@ -115,7 +115,7 @@ const Sidebar = () => {
             variant="ghost" 
             size="icon" 
             onClick={logout}
-            className="text-gray-600 hover:text-red-600"
+            className="text-white hover:text-red-300 hover:bg-sidebar-accent"
             aria-label="Déconnexion"
             title="Déconnexion"
           >
