@@ -32,7 +32,7 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-bold text-blue-600">MEILLEURE SANTE CRM</CardTitle>
@@ -85,11 +85,18 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="text-center text-sm text-gray-500">
-          <div className="w-full">
+        <CardFooter className="flex flex-col text-center text-sm text-gray-500">
+          <div className="w-full mb-4">
             <p>Pour une démonstration:</p>
             <p className="mt-1">Admin: admin@meilleure-sante.com / admin123</p>
             <p>Agent: agent@meilleure-sante.com / agent123</p>
+          </div>
+          <div className="w-full flex justify-center mt-2">
+            <img 
+              src="/lovable-uploads/08593941-c533-4f05-967c-12ea1ca99049.png" 
+              alt="Assurancia Courtage" 
+              className="h-16 object-contain"
+            />
           </div>
         </CardFooter>
       </Card>
