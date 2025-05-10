@@ -65,12 +65,23 @@ const ContactForm = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="company">Entreprise</Label>
-              <Input id="company" placeholder="Nom de l'entreprise" />
+              <Label htmlFor="birthDate">Date de naissance</Label>
+              <Input id="birthDate" placeholder="JJ/MM/AAAA" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="title">Fonction</Label>
               <Input id="title" placeholder="Titre / Fonction" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="mutuelle">Mutuelle</Label>
+              <Input id="mutuelle" placeholder="Nom de la mutuelle" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cotisation">Cotisation</Label>
+              <Input id="cotisation" placeholder="Montant en €/mois" />
             </div>
           </div>
 

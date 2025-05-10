@@ -30,36 +30,44 @@ const ContactsList = () => {
       name: "Sophie Martin",
       email: "sophie@techsolutions.fr",
       phone: "+33 6 12 34 56 78",
-      company: "Tech Solutions",
+      birthDate: "12/04/1988",
       title: "Directrice Marketing",
       type: "Client",
+      mutuelle: "Harmonie Mutuelle",
+      contribution: "120€/mois"
     },
     {
       id: 2,
       name: "Jean Dupont",
       email: "jean@marketingpro.fr",
       phone: "+33 6 23 45 67 89",
-      company: "Marketing Pro",
+      birthDate: "23/09/1975",
       title: "PDG",
       type: "Prospect",
+      mutuelle: "MGEN",
+      contribution: "85€/mois"
     },
     {
       id: 3,
       name: "Marie Blanc",
       email: "marie@designstudio.fr",
       phone: "+33 6 34 56 78 90",
-      company: "Design Studio",
+      birthDate: "05/11/1992",
       title: "Designer UI/UX",
       type: "Partenaire",
+      mutuelle: "Malakoff Médéric",
+      contribution: "95€/mois"
     },
     {
       id: 4,
       name: "Thomas Noir",
       email: "thomas@financecorp.fr",
       phone: "+33 6 45 67 89 01",
-      company: "Finance Corp",
+      birthDate: "17/06/1983",
       title: "Directeur Financier",
       type: "Lead",
+      mutuelle: "AXA Santé",
+      contribution: "150€/mois"
     },
   ];
 
@@ -67,7 +75,7 @@ const ContactsList = () => {
     (contact) =>
       contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.company.toLowerCase().includes(searchTerm.toLowerCase())
+      contact.birthDate.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleEdit = (id: number) => {
@@ -111,9 +119,11 @@ const ContactsList = () => {
                 <TableHead>Nom</TableHead>
                 <TableHead className="hidden md:table-cell">Email</TableHead>
                 <TableHead className="hidden md:table-cell">Téléphone</TableHead>
-                <TableHead className="hidden md:table-cell">Entreprise</TableHead>
+                <TableHead className="hidden md:table-cell">Date de naissance</TableHead>
                 <TableHead className="hidden lg:table-cell">Fonction</TableHead>
                 <TableHead className="hidden lg:table-cell">Type</TableHead>
+                <TableHead className="hidden lg:table-cell">Mutuelle</TableHead>
+                <TableHead className="hidden lg:table-cell">Cotisation</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -123,9 +133,11 @@ const ContactsList = () => {
                   <TableCell className="font-medium">{contact.name}</TableCell>
                   <TableCell className="hidden md:table-cell">{contact.email}</TableCell>
                   <TableCell className="hidden md:table-cell">{contact.phone}</TableCell>
-                  <TableCell className="hidden md:table-cell">{contact.company}</TableCell>
+                  <TableCell className="hidden md:table-cell">{contact.birthDate}</TableCell>
                   <TableCell className="hidden lg:table-cell">{contact.title}</TableCell>
                   <TableCell className="hidden lg:table-cell">{contact.type}</TableCell>
+                  <TableCell className="hidden lg:table-cell">{contact.mutuelle}</TableCell>
+                  <TableCell className="hidden lg:table-cell">{contact.contribution}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Button variant="ghost" size="icon" title="Email">
