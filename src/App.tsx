@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "@/components/layout/Sidebar";
 import Dashboard from "@/pages/Dashboard";
 import Contacts from "@/pages/Contacts";
+import ContactDetailPage from "@/pages/ContactDetail";
+import Appointments from "@/pages/Appointments";
 import Deals from "@/pages/Deals";
 import Activities from "@/pages/Activities";
 import Settings from "@/pages/Settings";
@@ -31,6 +33,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/contacts" element={<Contacts />} />
+              <Route path="/contacts/:id" element={<ContactDetailPage />} />
+              <Route path="/appointments" element={<Appointments />} />
               <Route path="/deals" element={<Deals />} />
               <Route path="/activities" element={<Activities />} />
               <Route path="/time-tracking" element={<TimeTracking />} />

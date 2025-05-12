@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { 
   Table,
   TableBody,
@@ -130,7 +131,14 @@ const ContactsList = () => {
             <TableBody>
               {filteredContacts.map((contact) => (
                 <TableRow key={contact.id}>
-                  <TableCell className="font-medium">{contact.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link 
+                      to={`/contacts/${contact.id}`} 
+                      className="hover:underline text-primary"
+                    >
+                      {contact.name}
+                    </Link>
+                  </TableCell>
                   <TableCell className="hidden md:table-cell">{contact.email}</TableCell>
                   <TableCell className="hidden md:table-cell">{contact.phone}</TableCell>
                   <TableCell className="hidden md:table-cell">{contact.birthDate}</TableCell>

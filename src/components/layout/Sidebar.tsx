@@ -12,7 +12,8 @@ import {
   UserCog,
   LogOut,
   Clock,
-  MessageCircle
+  MessageCircle,
+  List
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import { useAuth } from "@/components/auth/AuthLayout";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [appointmentCount, setAppointmentCount] = useState(2); // Mock data
   const location = useLocation();
   const { userRole, logout } = useAuth();
 
@@ -27,6 +29,12 @@ const Sidebar = () => {
   const baseMenuItems = [
     { path: "/", label: "Tableau de bord", icon: Home },
     { path: "/contacts", label: "Contacts", icon: Users },
+    { 
+      path: "/appointments", 
+      label: "RDV pris", 
+      icon: List,
+      badge: appointmentCount 
+    },
     { path: "/deals", label: "Affaires", icon: Briefcase },
     { path: "/activities", label: "Activités", icon: Calendar },
     { path: "/time-tracking", label: "Pointage", icon: Clock },
@@ -81,7 +89,21 @@ const Sidebar = () => {
                   )}
                 >
                   <item.icon size={20} className="flex-shrink-0" />
-                  {!collapsed && <span className="ml-3">{item.label}</span>}
+                  {!collapsed && (
+                    <>
+                      <span className="ml-3 flex-1">{item.label}</span>
+                      {item.badge && (
+                        <span className="bg-primary text-white text-xs font-medium px-2 py-0.5 rounded-full">
+                          {item.badge}
+                        </span>
+                      )}
+                    </>
+                  )}
+                  {collapsed && item.badge && (
+                    <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-primary text-white text-xs font-medium px-1.5 py-0.5 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
                 </div>
               </Link>
             </li>
