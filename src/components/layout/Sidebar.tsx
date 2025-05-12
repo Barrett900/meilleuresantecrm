@@ -19,6 +19,14 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth/AuthLayout";
 
+// Define the interface for menu items
+interface MenuItem {
+  path: string;
+  label: string;
+  icon: React.ElementType;
+  badge?: number; // Make badge optional
+}
+
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [appointmentCount, setAppointmentCount] = useState(2); // Mock data
@@ -26,7 +34,7 @@ const Sidebar = () => {
   const { userRole, logout } = useAuth();
 
   // Base menu items for all users
-  const baseMenuItems = [
+  const baseMenuItems: MenuItem[] = [
     { path: "/", label: "Tableau de bord", icon: Home },
     { path: "/contacts", label: "Contacts", icon: Users },
     { 
@@ -43,7 +51,7 @@ const Sidebar = () => {
   ];
 
   // Admin-only menu items
-  const adminMenuItems = [
+  const adminMenuItems: MenuItem[] = [
     { path: "/admin", label: "Administration", icon: UserCog },
     { path: "/time-management", label: "Gestion du temps", icon: Clock },
   ];
