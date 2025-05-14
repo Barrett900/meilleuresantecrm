@@ -119,16 +119,8 @@ const Sidebar = () => {
         </ul>
       </nav>
       
-      {/* Logo Assurancia */}
-      <div className="px-4 py-6 flex justify-center">
-        <img 
-          src="/lovable-uploads/24c926d0-e648-4212-a552-cbb7ef2891e6.png" 
-          alt="Assurancia Courtage" 
-          className={collapsed ? "w-12" : "w-36"}
-        />
-      </div>
-      
-      <div className="p-4 border-t border-sidebar-border">
+      {/* Logout button - Moved up and made more visible */}
+      <div className="p-4 border-t border-sidebar-border mt-auto">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <div className="w-8 h-8 rounded-full bg-sidebar-accent flex items-center justify-center text-white font-medium">
@@ -158,8 +150,21 @@ const Sidebar = () => {
           </Button>
         </div>
       </div>
+      
+      {/* Logo Assurancia - Moved up */}
+      <div className="px-4 py-3 flex flex-col items-center">
+        <img 
+          src="/lovable-uploads/24c926d0-e648-4212-a552-cbb7ef2891e6.png" 
+          alt="Assurancia Courtage" 
+          className={collapsed ? "w-12" : "w-36"}
+        />
+        {!collapsed && (
+          <p className="text-white font-medium text-center mt-1">ASSURANCIA</p>
+        )}
+      </div>
     </div>
   );
 };
 
 export default Sidebar;
+
