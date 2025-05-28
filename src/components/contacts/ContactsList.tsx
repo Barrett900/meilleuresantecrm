@@ -94,6 +94,31 @@ const ContactsList = () => {
     });
   };
 
+  const handleRingoverCall = (phone: string, name: string) => {
+    // Format phone number for Ringover (remove spaces and special characters)
+    const cleanPhone = phone.replace(/\s+/g, '').replace(/[^\d+]/g, '');
+    
+    // Ringover click-to-call URL format
+    const ringoverUrl = `ringover://call/${cleanPhone}`;
+    
+    try {
+      // Try to open with Ringover app
+      window.open(ringoverUrl, '_self');
+      
+      toast({
+        title: "Appel Ringover",
+        description: `Appel de ${name} en cours via Ringover`,
+      });
+    } catch (error) {
+      // Fallback if Ringover app is not available
+      toast({
+        title: "Erreur d'appel",
+        description: "Ringover n'est pas disponible. Vérifiez que l'application est installée.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -140,7 +165,15 @@ const ContactsList = () => {
                     </Link>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">{contact.email}</TableCell>
-                  <TableCell className="hidden md:table-cell">{contact.phone}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <button
+                      onClick={() => handleRingoverCall(contact.phone, contact.name)}
+                      className="text-primary hover:underline cursor-pointer"
+                      title={`Appeler ${contact.name} via Ringover`}
+                    >
+                      {contact.phone}
+                    </button>
+                  </TableCell>
                   <TableCell className="hidden md:table-cell">{contact.birthDate}</TableCell>
                   <TableCell className="hidden lg:table-cell">{contact.title}</TableCell>
                   <TableCell className="hidden lg:table-cell">{contact.type}</TableCell>
@@ -151,7 +184,12 @@ const ContactsList = () => {
                       <Button variant="ghost" size="icon" title="Email">
                         <Mail size={18} />
                       </Button>
-                      <Button variant="ghost" size="icon" title="Appeler">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        title="Appeler via Ringover"
+                        onClick={() => handleRingoverCall(contact.phone, contact.name)}
+                      >
                         <Phone size={18} />
                       </Button>
                       <DropdownMenu>

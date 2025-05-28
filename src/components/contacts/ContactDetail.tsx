@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -123,12 +122,35 @@ const ContactDetail = ({ id }: ContactDetailProps) => {
         });
         break;
       case "call":
-        toast({
-          description: `Appel de ${contact.name} au ${contact.phone}`,
-        });
+        handleRingoverCall(contact.phone, contact.name);
         break;
       default:
         break;
+    }
+  };
+
+  const handleRingoverCall = (phone: string, name: string) => {
+    // Format phone number for Ringover (remove spaces and special characters)
+    const cleanPhone = phone.replace(/\s+/g, '').replace(/[^\d+]/g, '');
+    
+    // Ringover click-to-call URL format
+    const ringoverUrl = `ringover://call/${cleanPhone}`;
+    
+    try {
+      // Try to open with Ringover app
+      window.open(ringoverUrl, '_self');
+      
+      toast({
+        title: "Appel Ringover",
+        description: `Appel de ${name} en cours via Ringover`,
+      });
+    } catch (error) {
+      // Fallback if Ringover app is not available
+      toast({
+        title: "Erreur d'appel",
+        description: "Ringover n'est pas disponible. Vérifiez que l'application est installée.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -153,7 +175,7 @@ const ContactDetail = ({ id }: ContactDetailProps) => {
             variant="outline" 
             size="icon"
             onClick={() => handleContactAction("call")}
-            title="Appeler"
+            title="Appeler via Ringover"
           >
             <Phone size={18} />
           </Button>
@@ -267,7 +289,23 @@ const ContactDetail = ({ id }: ContactDetailProps) => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Téléphone</Label>
-              <Input id="phone" name="phone" value={contact.phone} onChange={handleChange} />
+              <div className="flex gap-2">
+                <Input 
+                  id="phone" 
+                  name="phone" 
+                  value={contact.phone} 
+                  onChange={handleChange}
+                  className="flex-1"
+                />
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  onClick={() => handleRingoverCall(contact.phone, contact.name)}
+                  title="Appeler via Ringover"
+                >
+                  <Phone size={18} />
+                </Button>
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="title">Fonction</Label>
